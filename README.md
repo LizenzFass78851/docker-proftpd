@@ -4,6 +4,13 @@ Simple way to install a proftp server on an host.
 
 This FTP server work in passive mode (perhaps in active mode also but not sure...)
 
+---
+
+# Tags
+
+| Image | Tag | Build |
+|:------------------:|:--------------:|:-----------------:|
+| ghcr.io/lizenzfass78851/docker-proftpd | master | [![Build and Publish Docker Image](https://github.com/LizenzFass78851/docker-proftpd/actions/workflows/docker-image.yml/badge.svg?branch=master)](https://github.com/LizenzFass78851/docker-proftpd/actions/workflows/docker-image.yml) |
 
 # Quick start
 
@@ -13,7 +20,7 @@ docker run -d --net host \
 	-e MASQUERADE_ADDRESS=1.2.3.4 \
 	-v /path_to_ftp_dir_for_user1:/home/user1 \
 	-v /path_to_ftp_dir_for_user2:/home/user2 \
-	kibatic/proftpd
+	ghcr.io/lizenzfass78851/docker-proftpd:latest
 ```
 
 The default passive ports are 50000-50100.
@@ -38,7 +45,7 @@ docker run -d --net host \
 	-e MASQUERADE_ADDRESS=1.2.3.4
 	-v /path_to_ftp_dir_for_user1:/home/user1 \
 	-v /path_to_ftp_dir_for_user2:/home/user2 \
-	kibatic/proftpd
+	ghcr.io/lizenzfass78851/docker-proftpd:latest
 ```
 
 The `USERADD_OPTIONS` is not mandatory. It contains parameters we can
@@ -57,7 +64,7 @@ version: '3.7'
 
 services:
   proftpd:
-    image: kibatic/proftpd
+    image: ghcr.io/lizenzfass78851/docker-proftpd:latest
     network_mode: "host"
     restart: unless-stopped
     environment:
@@ -86,16 +93,6 @@ iptables -A INPUT -p tcp --dport 20 -j ACCEPT
 iptables -A OUTPUT -p tcp --dport 20 -j ACCEPT
 iptables -A INPUT -p tcp --dport 50000:50100 -j ACCEPT
 iptables -A OUTPUT -p tcp --dport 50000:50100 -j ACCEPT
-```
-
-## Testing this Dockerfile
-
-If you want to test this Dockerfile, you can use the tester directory :
-
-```bash
-cd tester
-docker-compose build --pull
-docker-compose up
 ```
 
 ## FTPS support
@@ -177,5 +174,5 @@ If you're using docker compose then add them to the list of volumes:
 
 # Author
 
-inspired by the good idea and the image hauptmedia/proftpd
-from Julian Haupt.
+- inspired by the good idea and the image hauptmedia/proftpd from Julian Haupt.
+- Forked from [kibatic/proftpd](https://github.com/kibatic/docker-proftpd.git)
