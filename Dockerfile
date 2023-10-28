@@ -1,4 +1,4 @@
-FROM debian:bullseye-slim
+FROM ubuntu:22.04
 
 MAINTAINER Philippe Le Van (@plv on twitter)
 
