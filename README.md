@@ -22,7 +22,7 @@ docker run -d --net host \
 	-e MASQUERADE_ADDRESS=1.2.3.4 \
 	-v /path_to_ftp_dir_for_user1:/home/user1 \
 	-v /path_to_ftp_dir_for_user2:/home/user2 \
-	kibatic/proftpd
+	ghcr.io/lizenzfass78851/docker-proftpd:latest
 ```
 
 The default passive ports are 50000-50100.
