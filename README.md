@@ -5,6 +5,13 @@ Simple way to install a proftp server on an host.
 
 This FTP server work in passive mode (perhaps in active mode also but not sure...)
 
+---
+
+# Tags
+
+| Image | Tag | Build |
+|:------------------:|:--------------:|:-----------------:|
+| ghcr.io/lizenzfass78851/docker-proftpd | master | [![Build and Publish Docker Image](https://github.com/LizenzFass78851/docker-proftpd/actions/workflows/docker-image.yml/badge.svg?branch=master)](https://github.com/LizenzFass78851/docker-proftpd/actions/workflows/docker-image.yml) |
 
 Quick start
 -----------
