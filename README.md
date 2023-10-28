@@ -49,7 +49,7 @@ docker run -d --net host \
 	-e MASQUERADE_ADDRESS=1.2.3.4
 	-v /path_to_ftp_dir_for_user1:/home/user1 \
 	-v /path_to_ftp_dir_for_user2:/home/user2 \
-	kibatic/proftpd
+	ghcr.io/lizenzfass78851/docker-proftpd:latest
 ```
 
 The USERADD_OPTIONS is not mandatory. It contains parameters we can
@@ -69,7 +69,7 @@ version: '3.7'
 
 services:
   proftpd:
-    image: kibatic/proftpd
+    image: ghcr.io/lizenzfass78851/docker-proftpd:latest
     network_mode: "host"
     restart: unless-stopped
     environment:
@@ -98,17 +98,8 @@ iptables -A INPUT -p tcp --dport 50000:50100 -j ACCEPT
 iptables -A OUTPUT -p tcp --dport 50000:50100 -j ACCEPT
 ```
 
-Versions
---------
-
-* 2022-05-10 : passive port config and masquerade config
-* 2022-05-09 : update to debian:bullseye-slim and better doc
-* 2019-10-09 : USERADD_OPTIONS added
-* 2019-04-01 : update to debian stretch
-* 2018-03-30 : creation
-
 Author
 ------
 
-inspired by the good idea and the image hauptmedia/proftpd
-from Julian Haupt.
+- inspired by the good idea and the image hauptmedia/proftpd from Julian Haupt.
+- Forked from (kibatic/proftpd)[https://github.com/kibatic/docker-proftpd.git]
