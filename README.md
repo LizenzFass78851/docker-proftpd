@@ -98,17 +98,6 @@ iptables -A INPUT -p tcp --dport 50000:50100 -j ACCEPT
 iptables -A OUTPUT -p tcp --dport 50000:50100 -j ACCEPT
 ```
 
-Testing this Dockerfile
------------------------
-
-If you want to test this Dockerfile, you can use the tester directory :
-
-```bash
-cd tester
-docker-compose build --pull
-docker-compose up
-```
-
 Versions
 --------
 
