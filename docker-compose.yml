@@ -1,0 +1,22 @@
+version: '3.7'
+
+services:
+  proftpd:
+    image: ghcr.io/lizenzfass78851/docker-proftpd:latest
+    #build: ./
+    network_mode: "host"
+    restart: unless-stopped
+    environment:
+      FTP_LIST: "myusername:mypassword"
+      # optional : It contains parameters we can give to the useradd command
+      #USERADD_OPTIONS: "-o --gid 33 --uid 33"
+      # optional : default to 50000 and 50100
+      #PASSIVE_MIN_PORT: 50000
+      #PASSIVE_MAX_PORT: 50100
+      # optional : default to undefined
+      #MASQUERADE_ADDRESS: 1.2.3.4
+    volumes:
+      - "./data/myusername:/home/myusername"
+    ports:
+      - 21:21
+      - 50000-50100:50000-50100
