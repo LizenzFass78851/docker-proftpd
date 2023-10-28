@@ -102,4 +102,4 @@ Author
 ------
 
 - inspired by the good idea and the image hauptmedia/proftpd from Julian Haupt.
-- Forked from (kibatic/proftpd)[https://github.com/kibatic/docker-proftpd.git]
+- Forked from [kibatic/proftpd](https://github.com/kibatic/docker-proftpd.git)
