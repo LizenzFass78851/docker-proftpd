@@ -2,7 +2,7 @@ FROM ubuntu:22.04
 
 MAINTAINER Philippe Le Van (@plv on twitter)
 
-RUN apt-get update -qq && \
+RUN apt-get update -qq && apt-get upgrade -yy && \
 	apt-get install -y proftpd && \
 	apt-get clean && \
     rm -rf /var/lib/apt/lists/* /tmp/* /var/tmp/*
