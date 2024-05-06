@@ -2,7 +2,7 @@ FROM debian:stable-slim
 
 MAINTAINER Philippe Le Van (@plv on twitter)
 
-RUN apt-get update -qq && \
+RUN apt-get update -qq && apt-get dist-upgrade -yy && \
 	apt-get install -y proftpd proftpd-mod-crypto && \
 	apt-get clean && \
     rm -rf /var/lib/apt/lists/* /tmp/* /var/tmp/*
