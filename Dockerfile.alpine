@@ -1,0 +1,13 @@
+FROM alpine:3.20
+
+RUN apk add --no-cache proftpd
+
+RUN sed -i "s/# DefaultRoot/DefaultRoot /" /etc/proftpd/proftpd.conf
+
+EXPOSE 20 21
+
+RUN mkdir -p /usr/local/sbin
+ADD docker-entrypoint.sh /usr/local/sbin/docker-entrypoint.sh
+ENTRYPOINT ["/usr/local/sbin/docker-entrypoint.sh"]
+
+CMD ["proftpd", "--nodaemon"]
