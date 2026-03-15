@@ -26,6 +26,9 @@ jobs:
       contents: read
       packages: write
 
+    env:
+      CONTAINER_NAME: test
+
     steps:
       - name: Checkout Dockerfile
         id: checkout
@@ -58,6 +61,67 @@ jobs:
           images: ${{ env.REGISTRY }}/${{ env.IMAGE_NAME }}
           flavor: |
             latest=${{ github.ref_name == 'master' }}
+
+      - name: Build main Docker image
+        id: prebuild
+        uses: docker/build-push-action@v7
+        with:
+          build-args: GH_TOKEN=${{ github.token }}
+          context: .
+          file: ./Dockerfile
+          cache-to: ${{ github.event_name != 'pull_request' && 'type=gha,mode=max,ignore-error=true' || '' }}
+          cache-from: ${{ github.event_name != 'pull_request' && 'type=gha' || '' }}
+          push: false
+          load: true
+          tags: ${{ steps.meta.outputs.tags }}
+          labels: ${{ steps.meta.outputs.labels }}
+
+      - name: test - start
+        run: |
+          sudo docker run -t -d \
+          --name ${{ env.CONTAINER_NAME }} \
+            -p 21:21 -p 50000-50100:50000-50100 \
+            -e FTP_LIST="testuser:testuser" \
+          $(echo "${{ steps.meta.outputs.tags }}" | head -n1)
+      - name: test - check logs
+        uses: crazy-max/.github/.github/actions/container-logs-check@main
+        with:
+          container_name: ${{ env.CONTAINER_NAME }}
+          log_check: " ProFTPD "
+          timeout: 120
+      - name: test - specific tests
+        env:
+          FTP_USER: testuser
+          FTP_PASS: testuser
+        run: |
+          RANDOM_FOLDER1=$(tr -dc 'A-Za-z0-9' </dev/urandom 2>/dev/null | head -c 8)
+          RANDOM_FOLDER2=$(tr -dc 'A-Za-z0-9' </dev/urandom 2>/dev/null | head -c 8)
+          RANDOM_FOLDER3=$(tr -dc 'A-Za-z0-9' </dev/urandom 2>/dev/null | head -c 8)
+          ftp -v -n -p <<EOT
+          open localhost 21
+          user ${{ env.FTP_USER }} ${{ env.FTP_PASS }}
+          bin
+          mkdir testdir
+          ls
+          cd testdir
+          mkdir $RANDOM_FOLDER1
+          mkdir $RANDOM_FOLDER2
+          mkdir $RANDOM_FOLDER3
+          ls
+          rmdir $RANDOM_FOLDER3
+          ls
+          quit
+          EOT
+          docker exec -t ${{ env.CONTAINER_NAME }} sh -c "ls -r /home/testuser/testdir | grep $RANDOM_FOLDER1 > /dev/null || exit 1"
+      - name: test - show logs
+        if: always()
+        run: |
+          sudo docker logs ${{ env.CONTAINER_NAME }} || true
+      - name: test - stop and remove
+        if: always()
+        run: |
+          sudo docker stop -t 10 ${{ env.CONTAINER_NAME }} || sudo docker stop -s SIGKILL -t 10 ${{ env.CONTAINER_NAME }} || true
+          sudo docker rm -f ${{ env.CONTAINER_NAME }}
 
       - name: Build and push main Docker image
         id: build
