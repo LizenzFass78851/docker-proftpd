@@ -18,8 +18,7 @@ This FTP server work in passive mode (perhaps in active mode also but not sure..
 docker run -d --net host \
 	-e FTP_LIST="user1:pass1;user2:pass2" \
 	-e MASQUERADE_ADDRESS=1.2.3.4 \
-	-v /path_to_ftp_dir_for_user1:/home/user1 \
-	-v /path_to_ftp_dir_for_user2:/home/user2 \
+	-v /path_to_ftp_dir_for_users:/home:Z \
 	ghcr.io/lizenzfass78851/docker-proftpd:latest
 ```
 
@@ -43,8 +42,7 @@ docker run -d --net host \
 	-e PASSIVE_MIN_PORT=50000
 	-e PASSIVE_MAX_PORT=50100
 	-e MASQUERADE_ADDRESS=1.2.3.4
-	-v /path_to_ftp_dir_for_user1:/home/user1 \
-	-v /path_to_ftp_dir_for_user2:/home/user2 \
+	-v /path_to_ftp_dir_for_users:/home:Z \
 	ghcr.io/lizenzfass78851/docker-proftpd:latest
 ```
 
@@ -76,7 +74,7 @@ services:
       # optional : default to undefined
       MASQUERADE_ADDRESS: 1.2.3.4
     volumes:
-      - "/the_direcotry_on_the_host:/home/myusername"
+      - "/the_direcotry_on_the_host:/home:Z"
     ports:
       - 21:21
       - 50000-50100:50000-50100 

@@ -18,7 +18,7 @@ services:
       # optional : default to undefined
       #MASQUERADE_ADDRESS: 1.2.3.4
     volumes:
-      - "./data/myusername:/home/myusername"
+      - "./data:/home:Z"
     ports:
       - 21:21
       - 50000-50100:50000-50100
