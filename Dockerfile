@@ -1,4 +1,4 @@
-FROM debian:bookworm-slim
+FROM debian:trixie-slim
 
 MAINTAINER Philippe Le Van (@plv on twitter)
 
