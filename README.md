@@ -150,7 +150,7 @@ docker run ...
 	-v /path_to_config_dir/proftpd-tls.conf:/etc/proftpd/conf.d/proftpd-tls.conf:ro \
 	-v /path_to_certificate_dir/key.pem:/etc/proftpd/key.pem:ro \
 	-v /path_to_certificate_dir/cert.pem:/etc/proftpd/cert.pem:ro \
-	kibatic/proftpd
+	ghcr.io/lizenzfass78851/docker-proftpd:latest
 ```
 
 If you're using docker compose then add them to the list of volumes:
