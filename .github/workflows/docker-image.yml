@@ -71,13 +71,16 @@ jobs:
 
       - name: test - start
         run: |
-          sudo docker run -t -d \
-          --name ${{ env.CONTAINER_NAME }} \
-            -p 21:21 -p 40000-40100:40000-40100 \
-            -e FTP_LIST="testuser:testuser" \
-            -e PASSIVE_MIN_PORT="40000" \
-            -e PASSIVE_MAX_PORT="40100" \
-          $(echo "${{ steps.meta.outputs.tags }}" | head -n1)
+          for a in 30 40 50; do
+            sudo docker run -t -d \
+            --name ${{ env.CONTAINER_NAME }} \
+              -p 21:21 -p ${a}000-${a}100:${a}000-${a}100 \
+              -e FTP_LIST="testuser:testuser" \
+              -e PASSIVE_MIN_PORT="${a}000" \
+              -e PASSIVE_MAX_PORT="${a}100" \
+            $(echo "${{ steps.meta.outputs.tags }}" | head -n1) \
+            && break || sleep 2
+          done
       - name: test - check logs
         uses: crazy-max/.github/.github/actions/container-logs-check@main
         with:
