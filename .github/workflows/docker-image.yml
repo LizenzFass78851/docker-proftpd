@@ -28,8 +28,7 @@ jobs:
         run: |
           arch="
           amd64;linux/amd64
-          arm64;linux/arm64
-          armhfv7;linux/arm/v7
+          arm64;linux/arm64,linux/arm/v7
           "
 
           tag="
@@ -85,7 +84,7 @@ jobs:
           ref: ${{ matrix.tag.target }}
 
       - name: Setup QEMU
-        if: ${{ matrix.arch.cpu == 'riscv64' }}
+        if: ${{ contains(matrix.arch.platform, 'linux/riscv64') }}
         uses: docker/setup-qemu-action@v4
 
       - &buildx-setup
@@ -152,10 +151,12 @@ jobs:
           retention-days: 1
 
       - name: Test - start
+        env:
+          PLATFORM: "${{ matrix.arch.platform }}"
         run: |
           for a in 30 40 50; do
             sudo docker run -t -d \
-            --name ${{ env.CONTAINER_NAME }} --platform ${{ matrix.arch.platform }} \
+            --name ${{ env.CONTAINER_NAME }} --platform ${PLATFORM%%,*} \
               -p 21:21 -p ${a}000-${a}100:${a}000-${a}100 \
               -e FTP_LIST="testuser:testuser" \
               -e PASSIVE_MIN_PORT="${a}000" \
