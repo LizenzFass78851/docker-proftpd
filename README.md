@@ -58,8 +58,6 @@ the files and directory with the right user on the host.
 You can for example use a docker-compose like this (comment ports with `#` if you do not want to expose it to outside your machine:
 
 ```yaml
-version: '3.7'
-
 services:
   proftpd:
     image: ghcr.io/lizenzfass78851/docker-proftpd:latest

@@ -1,5 +1,3 @@
-version: '3.7'
-
 services:
   proftpd:
     image: ghcr.io/lizenzfass78851/docker-proftpd:latest
